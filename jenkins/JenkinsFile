@@ -5,21 +5,21 @@ pipeline {
         stage('Debug Environment') {
             steps {
                 script {
-                    sh 'whoami && groups && sudo docker ps'
+                    sh 'whoami && groups && docker ps'
                 }
             }
         }
         stage('Pull Docker Image') {
             steps {
                 script {
-                    sh 'sudo docker pull hello-world'
+                    sh 'docker pull hello-world'
                 }
             }
         }
         stage('Run Docker Container') {
             steps {
                 script {
-                    sh 'sudo docker run hello-world'
+                    sh 'docker run hello-world'
                 }
             }
         }
