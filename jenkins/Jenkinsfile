@@ -1,25 +1,40 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = 'warriorop/golang-pipeline-app'
+        IMAGE_TAG = 'latest'
+    }
+
     stages {
-        stage('Debug Environment') {
-            steps {
-                script {
-                    sh 'whoami && groups && docker ps'
-                }
-            }
-        }
         stage('Pull Docker Image') {
             steps {
                 script {
-                    sh 'docker pull hello-world'
+                    // Pull the image from Docker Hub
+                    echo "Pulling Docker image: ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker pull ${IMAGE_NAME}:${IMAGE_TAG}"
+                }
+            }
+        }
+        stage('Testing Docker Image') {
+            steps {
+                script {
+                    // Test the image by running the container and executing the test command inside it
+                    echo "Running tests inside the Docker container"
+                    sh """
+                    docker run --rm ${IMAGE_NAME}:${IMAGE_TAG} make test
+                    """
                 }
             }
         }
         stage('Run Docker Container') {
             steps {
                 script {
-                    sh 'docker run hello-world'
+                    // Test the image by running the container and executing the test command inside it
+                    echo "Running tests inside the Docker container"
+                    sh """
+                    docker run --rm ${IMAGE_NAME}:${IMAGE_TAG} make run
+                    """
                 }
             }
         }
